@@ -1,0 +1,283 @@
+---
+title: "Amaizing  Baseline Survey_Final-modulej-rpf"
+author: "Njambi"
+format: html
+editor: visual
+---
+
+## 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+## Clear the environment
+
+```{r}
+
+rm(list = ls())
+
+```
+
+## Loading necessary libraries
+
+```{r, include=FALSE}
+
+library(tidyverse) # includes the dplyr, ggplot2, tidyr, readr, stringr, forcats, tibble packages
+library(readxl)
+library(Hmisc)
+library(labelled)
+library(magrittr)
+library(datawizard)
+library(gtsummary)
+library(gt)
+library(kableExtra)
+library(flextable)
+library(splitstackshape)
+library(lubridate)
+library(foreign)
+library(haven)
+
+
+```
+
+## Set the working directory
+
+```{r}
+# Set working directory
+
+setwd("C:\\Users\\awanjau\\OneDrive - CGIAR\\Alliance\\Alliance_2024\\AMAZING\\AmazingBaselineDataCleaning\\Amaizing  Baseline Survey_Final-modulej-rpf")
+      
+```
+
+## Loading data
+
+```{r}
+# Read a csv file
+
+aMaizingBL_owned_assets_path <- "C:\\Users\\awanjau\\OneDrive - CGIAR\\Alliance\\Alliance_2024\\AMAZING\\aMaizingBaseline_Files\\Amaizing  Baseline Survey_Final-modulej-rpf.csv"
+
+aMaizingBL_owned_assets <- read_csv(aMaizingBL_owned_assets_path)
+
+head(aMaizingBL_owned_assets)
+```
+
+```{r}
+# Check number of rows and columns in data
+
+dim(aMaizingBL_owned_assets)
+
+# Print column names
+
+names(aMaizingBL_owned_assets)
+```
+
+```{r}
+class(aMaizingBL_owned_assets$jindex1)
+
+sort(unique(aMaizingBL_owned_assets$jindex1), na.last = TRUE)
+```
+
+```{r}
+aMaizingBL_owned_assets <- aMaizingBL_owned_assets %>%
+  mutate(
+    jindex1 = as.integer(jindex1)
+  )
+
+class(aMaizingBL_owned_assets$jindex1)
+```
+
+```{r}
+class(aMaizingBL_owned_assets$jindex2)
+
+sort(unique(aMaizingBL_owned_assets$jindex2), na.last = TRUE)
+```
+
+```{r}
+
+owned_assets_levels <- c(
+  
+  "Animal drawn Cart",	"Ox-ploughing set",	"Jembe",	"Axe",	"Sprayer",	"Sprinkler set/drip irrigation",	"Motorized grain mill (Posho Mill)",	"Water pump (hand, foot, diesel)",	"Harvester/thresher/shellers",	"Chaff Cutter",	"Spade or shovel",	"Radio, cassette or CD player",	"Cell phone",	"TV",	"Kerosene stove",	"Gas Stove",	"Water Tank",	"Bicycle",	"Motorbike/Boda Boda",	"Cars",	"Tractors",	"Wheelbarrow",	"Jewelry: gold, silver, wristwatches",	"Wooden box",	"Metal boxes",	"Satellite dish",	"Wooden bed",	"Metal bed",	"Improved charcoal/wood stove",	"Chairs",	"Sofa set",	"Table",	"Grass roofed house",	"Corrugated iron sheet house",	"Shelf/wardrobe",	"Pulverizer",	"Fridge", 	"Tractor drawn equipment",	"Laptop",	"Other Specify 1",	"Other Specify 2",	"Other Specify 3"
+
+                         )  
+
+#length(owned_assets_levels)
+
+
+aMaizingBL_owned_assets <- aMaizingBL_owned_assets %>%
+  mutate(
+    jindex2 = factor(
+      jindex2, 
+      levels = c(1:39, -222, -221, -223), 
+      labels = owned_assets_levels
+    )
+  
+  ) 
+
+class(aMaizingBL_owned_assets$jindex2)
+
+unique(aMaizingBL_owned_assets$jindex2)
+```
+
+```{r}
+class(aMaizingBL_owned_assets$jname)
+
+unique(aMaizingBL_owned_assets$jname)
+```
+
+```{r}
+aMaizingBL_owned_assets <- aMaizingBL_owned_assets %>%
+  mutate(
+    jname = factor(jname)
+  
+  ) 
+
+class(aMaizingBL_owned_assets$jname)
+```
+
+```{r}
+class(aMaizingBL_owned_assets$j2)
+
+sort(unique(aMaizingBL_owned_assets$j2), na.last = TRUE)
+```
+
+```{r}
+
+aMaizingBL_owned_assets <- aMaizingBL_owned_assets %>%
+  mutate(
+    j2 = case_when(
+      j2 == -999 ~ NA_real_,  # Replace -999 with NA for numeric variables
+      j2 == -888  ~ NA_real_,
+      j2 == 888 ~ NA_real_,
+      j2 == 999 ~ NA_real_,
+      TRUE ~ j2               
+    ),
+    
+    j2 = as.integer(j2)    # Convert numeric to integer
+    
+  )
+
+class(aMaizingBL_owned_assets$j2)
+
+sort(unique(aMaizingBL_owned_assets$j2), na.last = TRUE)
+```
+
+```{r}
+class(aMaizingBL_owned_assets$j3)
+
+sort(unique(aMaizingBL_owned_assets$j3), na.last = TRUE)
+
+
+```
+
+```{r}
+
+aMaizingBL_owned_assets <- aMaizingBL_owned_assets %>%
+  mutate(
+    j3 = case_when(
+      j3 == -999 ~ NA_real_,  # All these numbers converted to NA
+      j3 == -888  ~ NA_real_,
+      j3 == 666 ~ NA_real_,
+      j3 == 999 ~ NA_real_,
+      j3 == 0 ~  NA_real_,     
+      TRUE ~ j3               
+    )
+    
+  )
+
+class(aMaizingBL_owned_assets$j3)
+
+sort(unique(aMaizingBL_owned_assets$j3), na.last = TRUE)
+```
+
+```{r}
+
+column_labels <- c(
+
+jindex1 = "Owned asset repeat iteration/index",
+jindex2 = "Owned asset level/category selected",
+jname = "Name of owned asset corresponding to jindex2 value",
+j2 = "Number of  jname owned currently",
+j3 = "If you would sell one of  jname how much would you receive from the sale now? (KSh)",
+PARENT_KEY = "Parent key",
+KEY = "Key",
+`SET-OF-rpf` = "Owned asset repeat group ID"
+)
+
+```
+
+```{r}
+
+# Rename columns with characters not supported by stata
+
+aMaizingBL_owned_assets <- aMaizingBL_owned_assets %>%
+  
+  rename(SET_OF_rpf = `SET-OF-rpf`
+    
+         )
+
+```
+
+```{r}
+aMaizingBL_owned_assets <- aMaizingBL_owned_assets %>%
+  set_variable_labels(.labels = column_labels)
+```
+
+Using the function View() to open the new data in a spreadsheet reveals the column names and labels.
+
+```{r}
+
+#View(aMaizingBL_owned_assets)
+
+```
+
+## Generate a data dictionary
+
+```{r}
+# Data dictionary
+
+aMaizingBL_owned_assets_dict <- look_for(aMaizingBL_owned_assets, labels = TRUE, values = TRUE) %>%
+  dplyr::select(-c(missing, value_labels))
+
+  gt(aMaizingBL_owned_assets_dict)
+
+```
+
+## Export data dictionary to CSV
+
+```{r}
+
+readr::write_csv(aMaizingBL_owned_assets_dict, "aMaizingBL_owned_assets_dict.csv")
+
+```
+
+## Export data to CSV
+
+```{r}
+
+readr::write_csv(aMaizingBL_owned_assets, "aMaizingBL_owned_assets.csv")
+
+```
+
+## Save as R data
+
+```{r}
+
+save(aMaizingBL_owned_assets, file = "aMaizingBL_owned_assets.RData")
+```
+
+## Export data to SPSS
+
+```{r}
+
+write.foreign(aMaizingBL_owned_assets, "aMaizingBL_owned_assets.sav", "aMaizingBL_owned_assets", package = "SPSS")
+
+```
+
+## Export data to STATA
+
+```{r}
+
+write_dta(aMaizingBL_owned_assets, "aMaizingBL_owned_assets.dta")
+
+```
